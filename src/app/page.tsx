@@ -1,65 +1,105 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase-browser'
+import { BookCard } from '@/components/BookCard'
+import { BuyModal } from '@/components/BuyModal'
+import { Loader2, BookOpen } from 'lucide-react'
+
+export default function ShopPage() {
+  const [books, setBooks] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedBook, setSelectedBook] = useState<any | null>(null)
+
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function fetchBooks() {
+      try {
+        const { data, error } = await supabase
+          .from('books')
+          .select(`
+            *,
+            book_images (
+              image_url,
+              sort_order
+            )
+          `)
+          .eq('is_active', true)
+          .order('created_at', { ascending: false })
+
+        if (error) throw error
+
+        const formattedBooks = data?.map((book: any) => ({
+          ...book,
+          images: book.book_images
+            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)
+            ?.map((img: any) => img.image_url) || []
+        })) || []
+
+        setBooks(formattedBooks)
+      } catch (error: any) {
+        console.error('Error fetching books:', error?.message || 'Unknown error');
+        console.dir(error);
+        if (error?.code) console.error('Error Code:', error.code);
+        if (error?.details) console.error('Error Details:', error.details);
+        if (error?.hint) console.error('Error Hint:', error.hint);
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchBooks()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
+      </div>
+    )
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-center text-center space-y-6 mb-20">
+        <div className="rounded-2xl bg-emerald-50 p-4 text-emerald-600 shadow-sm ring-1 ring-emerald-100">
+          <BookOpen className="h-10 w-10" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-6xl max-w-3xl">
+          Discover Your Next <span className="text-emerald-600">Great Read</span>
+        </h1>
+        <p className="max-w-xl text-lg text-slate-500 leading-relaxed font-medium">
+          Explore our curated collection of bestselling books. Premium quality, best prices, delivered to your door.
+        </p>
+      </div>
+
+      {books.length > 0 ? (
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {books.map((book) => (
+            <BookCard
+              key={book.id}
+              book={book}
+              onBuy={(b) => setSelectedBook(b)}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          ))}
         </div>
-      </main>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="bg-slate-50 p-8 rounded-full mb-6">
+            <BookOpen className="h-20 w-20 text-slate-200" />
+          </div>
+          <h3 className="text-2xl font-black text-slate-900">No books found</h3>
+          <p className="mt-2 text-slate-500 font-medium max-w-xs">Our library is currently resting. Check back soon for new arrivals.</p>
+        </div>
+      )}
+
+      {selectedBook && (
+        <BuyModal
+          book={selectedBook}
+          onClose={() => setSelectedBook(null)}
+        />
+      )}
     </div>
-  );
+  )
 }
