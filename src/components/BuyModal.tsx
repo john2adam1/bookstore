@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { X, CheckCircle2, Loader2, ShoppingBag } from 'lucide-react'
 import { createClient } from '@/lib/supabase-browser'
 import { motion, AnimatePresence } from 'framer-motion'
+import { syncOrderToGoogleSheets } from '@/app/actions'
 
 interface Book {
     id: string
@@ -43,19 +44,12 @@ export function BuyModal({ book, onClose }: BuyModalProps) {
 
             if (insertError) throw insertError
 
-            // Synchronize with Google Sheets
-            const sheetsUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL
-            if (sheetsUrl) {
-                fetch(sheetsUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({
-                        book_title: book.title,
-                        full_name: fullName,
-                        phone: phone,
-                    }),
-                }).catch(err => console.error('Google Sheets sync error:', err))
-            }
+            // Synchronize with Google Sheets via Server Action
+            syncOrderToGoogleSheets({
+                book_title: book.title,
+                full_name: fullName,
+                phone: phone,
+            }).catch(err => console.error('Google Sheets sync error:', err))
 
             setSuccess(true)
         } catch (err: any) {
