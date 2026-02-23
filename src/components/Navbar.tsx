@@ -47,17 +47,19 @@ export function Navbar() {
     }
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-black/5 bg-slate-100/80 backdrop-blur-xl">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-                <Link href="/" className="flex items-center space-x-3">
-                    <img src="/logo.png" alt="BookStore" className="h-9 w-auto hover:scale-105 transition-transform" />
-                    <span className="text-xl font-black tracking-tighter text-[#002B5B]">BookStore</span>
-                </Link>
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
 
-                <div className="flex items-center space-x-4">
-                    {/* Admin links removed for security */}
-                </div>
-            </div>
-        </nav>
+            <Link href="/" className="flex items-center space-x-3">
+                <img src="/logo.png" alt="BookStore" className="h-15 w-auto hover:scale-105 transition-transform" />
+                <span className="text-xl font-black tracking-tighter text-[#002B5B]">
+                    Ebooks
+                </span>
+            </Link>
+
+            <span className="text-xl font-black tracking-tighter text-[#002B5B]">
+                iMed team
+            </span>
+
+        </div>
     )
 }

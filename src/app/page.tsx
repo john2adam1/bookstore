@@ -7,6 +7,7 @@ import { BuyModal } from '@/components/BuyModal'
 import { Loader2, BookOpen } from 'lucide-react'
 
 export default function ShopPage() {
+  console.log('SUPABASE URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
   const [books, setBooks] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedBook, setSelectedBook] = useState<any | null>(null)
