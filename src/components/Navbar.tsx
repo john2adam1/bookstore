@@ -47,13 +47,11 @@ export function Navbar() {
     }
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
+        <nav className="sticky top-0 z-50 w-full border-b border-black/5 bg-slate-100/80 backdrop-blur-xl">
             <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-                <Link href="/" className="flex items-center space-x-2">
-                    <div className="bg-emerald-600 p-1.5 rounded-lg">
-                        <ShoppingBag className="h-6 w-6 text-white" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-slate-900">BookStore</span>
+                <Link href="/" className="flex items-center space-x-3">
+                    <img src="/logo.png" alt="BookStore" className="h-9 w-auto hover:scale-105 transition-transform" />
+                    <span className="text-xl font-black tracking-tighter text-[#002B5B]">BookStore</span>
                 </Link>
 
                 <div className="flex items-center space-x-4">

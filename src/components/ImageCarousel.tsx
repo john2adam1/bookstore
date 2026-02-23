@@ -31,7 +31,7 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
     }
 
     return (
-        <div className="group relative h-full w-full overflow-hidden bg-gray-100">
+        <div className="group relative h-full w-full overflow-hidden bg-slate-100">
             <AnimatePresence initial={false} mode="wait">
                 <motion.img
                     key={currentIndex}
@@ -49,21 +49,21 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
                 <>
                     <button
                         onClick={handlePrevious}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 text-gray-800 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 text-slate-800 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100 shadow-sm border border-slate-100"
                     >
-                        <ChevronLeft className="h-5 w-5" />
+                        <ChevronLeft className="h-4 w-4" />
                     </button>
                     <button
                         onClick={handleNext}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 text-gray-800 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 text-slate-800 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100 shadow-sm border border-slate-100"
                     >
-                        <ChevronRight className="h-5 w-5" />
+                        <ChevronRight className="h-4 w-4" />
                     </button>
-                    <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 space-x-1.5">
+                    <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 space-x-1.5 px-2 py-1 bg-black/5 rounded-full">
                         {images.map((_, index) => (
                             <div
                                 key={index}
-                                className={`h-1.5 w-1.5 rounded-full transition-colors ${index === currentIndex ? 'bg-emerald-600' : 'bg-white/60'
+                                className={`h-1.5 w-1.5 rounded-full transition-all ${index === currentIndex ? 'bg-[#002B5B] w-4' : 'bg-black/20'
                                     }`}
                             />
                         ))}

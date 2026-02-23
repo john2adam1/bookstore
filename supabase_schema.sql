@@ -162,3 +162,30 @@ DO $$ BEGIN
       )
     );
 END $$;
+
+-- Banners table for multi-banner support
+CREATE TABLE IF NOT EXISTS public.banners (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  image_url TEXT NOT NULL,
+  title TEXT,
+  sort_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS for banners
+ALTER TABLE public.banners ENABLE ROW LEVEL SECURITY;
+
+-- Banners Policies
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Banners are viewable by everyone." ON public.banners;
+    CREATE POLICY "Banners are viewable by everyone." ON public.banners FOR SELECT USING (true);
+    
+    DROP POLICY IF EXISTS "Only admins can manage banners." ON public.banners;
+    CREATE POLICY "Only admins can manage banners." ON public.banners FOR ALL USING (
+      EXISTS (
+        SELECT 1 FROM public.profiles
+        WHERE id = auth.uid() AND role = 'admin'
+      )
+    );
+END $$;

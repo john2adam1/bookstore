@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Link from 'next/link';
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { Banner } from "@/components/Banner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full bg-gray-50">
+    <html lang="en" className="h-full">
       <body className={`${inter.className} flex min-h-full flex-col`}>
         <Navbar />
+        <Banner />
         <main className="flex-1">
           {children}
         </main>

@@ -61,16 +61,13 @@ export default function ShopPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-      <div className="flex flex-col items-center justify-center text-center space-y-6 mb-20">
-        <div className="rounded-2xl bg-emerald-50 p-4 text-emerald-600 shadow-sm ring-1 ring-emerald-100">
-          <BookOpen className="h-10 w-10" />
-        </div>
-        <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-6xl max-w-3xl">
-          Discover Your Next <span className="text-emerald-600">Great Read</span>
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-center text-center space-y-3 mb-12">
+        <h1 className="text-5xl font-black tracking-tighter text-slate-900 sm:text-6xl max-w-3xl">
+          O'qishni<span className="text-[#002B5B]"> boshlang!</span>
         </h1>
-        <p className="max-w-xl text-lg text-slate-500 leading-relaxed font-medium">
-          Explore our curated collection of bestselling books. Premium quality, best prices, delivered to your door.
+        <p className="max-w-xl text-lg text-slate-600 leading-normal font-medium">
+          Kitoblarni yetkazib berish xizmati!
         </p>
       </div>
 
