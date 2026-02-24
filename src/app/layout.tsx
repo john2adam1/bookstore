@@ -11,8 +11,57 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Modern Book Store",
-  description: "Browse and buy your favorite books with ease.",
+  title: {
+    default: "Kitob Do'koni - Eng sara kitoblar to'plami",
+    template: "%s | Kitob Do'koni"
+  },
+  description: "Siz qidirgan eng sara kitoblar endi bir joyda! Ishonchli va tezkor yetkazib berish xizmati.",
+  keywords: ["kitoblar", "kitob do'koni", "uzbekistan kitoblar", "online kitob sotib olish", "book store"],
+  authors: [{ name: "Kitob Do'koni" }],
+  creator: "Kitob Do'koni",
+  publisher: "Kitob Do'koni",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Kitob Do'koni - Eng sara kitoblar to'plami",
+    description: "Siz qidirgan eng sara kitoblar endi bir joyda! Ishonchli va tezkor yetkazib berish xizmati.",
+    url: 'https://ebookstore.uz',
+    siteName: "Kitob Do'koni",
+    locale: 'uz_UZ',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Kitob Do'koni - Eng sara kitoblar to'plami",
+    description: "Siz qidirgan eng sara kitoblar endi bir joyda! Ishonchli va tezkor yetkazib berish xizmati.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: "Kitob Do'koni",
+  description: "Siz qidirgan eng sara kitoblar endi bir joyda! Ishonchli va tezkor yetkazib berish xizmati.",
+  url: 'https://ebookstore.uz',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://ebookstore.uz/search?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 export default function RootLayout({
@@ -21,7 +70,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="uz" className="h-full">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${inter.className} flex min-h-full flex-col`}>
         <Navbar />
         <Banner />

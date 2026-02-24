@@ -44,7 +44,7 @@ export function BuyModal({ book, onClose }: BuyModalProps) {
 
             setSuccess(true)
         } catch (err: any) {
-            setError(err.message || 'Something went wrong. Please try again.')
+            setError(err.message || 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.')
         } finally {
             setLoading(false)
         }
@@ -57,13 +57,13 @@ export function BuyModal({ book, onClose }: BuyModalProps) {
                     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                         <CheckCircle2 className="h-10 w-10" />
                     </div>
-                    <h2 className="mt-6 text-2xl font-black text-slate-900">Order Received!</h2>
-                    <p className="mt-2 text-slate-500">We'll contact you shortly to confirm your delivery.</p>
+                    <h2 className="mt-6 text-2xl font-black text-slate-900">Buyurtma qabul qilindi!</h2>
+                    <p className="mt-2 text-slate-500">Yaqin orada yetkazib berishni tasdiqlash uchun siz bilan bog'lanamiz.</p>
                     <button
                         onClick={onClose}
                         className="mt-8 w-full rounded-xl bg-[#002B5B] py-3 font-bold text-white transition-all hover:bg-[#003d7a]"
                     >
-                        Wonderful
+                        Ajoyib
                     </button>
                 </div>
             ) : (
@@ -93,25 +93,25 @@ export function BuyModal({ book, onClose }: BuyModalProps) {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Full Name</label>
+                            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Ism va familiya</label>
                             <input
                                 type="text"
                                 required
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
                                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-slate-900 focus:border-[#002B5B] focus:ring-1 focus:ring-[#002B5B] outline-none transition-all font-medium placeholder:text-slate-400"
-                                placeholder="John Doe"
+                                placeholder="Ism Familiya"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Phone Number</label>
+                            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Telefon raqami</label>
                             <input
                                 type="tel"
                                 required
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-slate-900 focus:border-[#002B5B] focus:ring-1 focus:ring-[#002B5B] outline-none transition-all font-medium placeholder:text-slate-400"
-                                placeholder="+1 234 567 890"
+                                placeholder="+998 90 123 45 67"
                             />
                         </div>
 
@@ -127,7 +127,7 @@ export function BuyModal({ book, onClose }: BuyModalProps) {
                             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (
                                 <>
                                     <ShoppingBag className="h-5 w-5" />
-                                    <span>Confirm Purchase</span>
+                                    <span>Sotib olishni tasdiqlash</span>
                                 </>
                             )}
                         </button>
