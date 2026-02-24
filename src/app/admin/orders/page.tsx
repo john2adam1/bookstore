@@ -1,14 +1,24 @@
 import { createClient } from '@/lib/supabase-server'
-import { ShoppingBag, Search, Calendar, User, Phone } from 'lucide-react'
+import { ShoppingBag, Calendar, User, Phone } from 'lucide-react'
 import { format } from 'date-fns'
+import { OrderFilters } from '@/components/OrderFilters'
+import Link from 'next/link'
 
-export default async function AdminOrdersPage({
-    searchParams
-}: {
-    searchParams: { q?: string }
+export default async function AdminOrdersPage(props: {
+    searchParams: Promise<{ q?: string; bookId?: string; from?: string; to?: string }>
 }) {
+    const searchParams = await props.searchParams
     const supabase = await createClient()
     const query = searchParams.q || ''
+    const bookId = searchParams.bookId || ''
+    const fromDate = searchParams.from || ''
+    const toDate = searchParams.to || ''
+
+    // Fetch all books for the filter dropdown
+    const { data: books } = await supabase
+        .from('books')
+        .select('id, title')
+        .order('title')
 
     let supabaseQuery = supabase
         .from('orders')
@@ -17,6 +27,18 @@ export default async function AdminOrdersPage({
 
     if (query) {
         supabaseQuery = supabaseQuery.or(`book_title.ilike.%${query}%,full_name.ilike.%${query}%,phone.ilike.%${query}%`)
+    }
+
+    if (bookId) {
+        supabaseQuery = supabaseQuery.eq('book_id', bookId)
+    }
+
+    if (fromDate) {
+        supabaseQuery = supabaseQuery.gte('created_at', `${fromDate}T00:00:00`)
+    }
+
+    if (toDate) {
+        supabaseQuery = supabaseQuery.lte('created_at', `${toDate}T23:59:59`)
     }
 
     const { data: orders } = await supabaseQuery
@@ -28,17 +50,13 @@ export default async function AdminOrdersPage({
                 <p className="text-slate-500 mt-1 font-medium">Track all book purchases and customer inquiries.</p>
             </div>
 
-            <div className="mb-8 flex items-center justify-between gap-4">
-                <form className="relative flex-1 max-w-md">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                    <input
-                        name="q"
-                        defaultValue={query}
-                        placeholder="Search by title, name, or phone..."
-                        className="w-full rounded-2xl border-slate-200 bg-white py-4 pl-12 pr-4 text-sm font-medium focus:border-emerald-500 focus:ring-emerald-500 outline-none transition-all shadow-sm"
-                    />
-                </form>
-            </div>
+            <OrderFilters
+                books={books}
+                initialQuery={query}
+                initialBookId={bookId}
+                initialFrom={fromDate}
+                initialTo={toDate}
+            />
 
             <div className="overflow-hidden rounded-[2rem] bg-white shadow-sm ring-1 ring-slate-200">
                 <div className="overflow-x-auto">
@@ -87,8 +105,8 @@ export default async function AdminOrdersPage({
                                             <div className="bg-slate-100 p-6 rounded-full mb-4">
                                                 <ShoppingBag className="h-10 w-10 text-slate-300" />
                                             </div>
-                                            <h3 className="text-xl font-black text-slate-900">No orders yet</h3>
-                                            <p className="text-slate-500 font-medium">When users buy books, they will appear here.</p>
+                                            <h3 className="text-xl font-black text-slate-900">No orders found</h3>
+                                            <p className="text-slate-500 font-medium">Try adjusting your filters or search terms.</p>
                                         </div>
                                     </td>
                                 </tr>

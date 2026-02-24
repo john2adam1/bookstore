@@ -48,7 +48,6 @@ export function Navbar() {
 
     return (
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-
             <Link href="/" className="flex items-center space-x-3">
                 <img src="/logo.png" alt="BookStore" className="h-15 w-auto hover:scale-105 transition-transform" />
                 <span className="text-xl font-black tracking-tighter text-[#002B5B]">
@@ -59,7 +58,6 @@ export function Navbar() {
             <span className="text-xl font-black tracking-tighter text-[#002B5B]">
                 iMed team
             </span>
-
         </div>
     )
 }
