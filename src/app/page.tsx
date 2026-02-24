@@ -7,7 +7,6 @@ import { BuyModal } from '@/components/BuyModal'
 import { Loader2, BookOpen } from 'lucide-react'
 
 export default function ShopPage() {
-  console.log('SUPABASE URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
   const [books, setBooks] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedBook, setSelectedBook] = useState<any | null>(null)
@@ -41,10 +40,6 @@ export default function ShopPage() {
         setBooks(formattedBooks)
       } catch (error: any) {
         console.error('Error fetching books:', error?.message || 'Unknown error');
-        console.dir(error);
-        if (error?.code) console.error('Error Code:', error.code);
-        if (error?.details) console.error('Error Details:', error.details);
-        if (error?.hint) console.error('Error Hint:', error.hint);
       } finally {
         setLoading(false)
       }
@@ -56,24 +51,29 @@ export default function ShopPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
+        <Loader2 className="h-10 w-10 animate-spin text-[#002B5B]" />
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex flex-col items-center justify-center text-center space-y-3 mb-12">
-        <h1 className="text-5xl font-black tracking-tighter text-slate-900 sm:text-6xl max-w-3xl">
+    <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-center text-center space-y-4 mb-16">
+        <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-[#002B5B] text-xs font-bold uppercase tracking-wider mb-2">
+          <BookOpen className="h-4 w-4" />
+          <span>Premium Collection</span>
+        </div>
+        <h1 className="text-5xl font-black tracking-tighter text-slate-900 sm:text-7xl max-w-3xl leading-[1.1]">
           O'qishni<span className="text-[#002B5B]"> boshlang!</span>
         </h1>
-        <p className="max-w-xl text-lg text-slate-600 leading-normal font-medium">
-          Kitoblarni yetkazib berish xizmati!
+        <p className="max-w-xl text-lg text-slate-500 leading-relaxed font-medium">
+          Siz qidirgan eng sara kitoblar endi bir joyda!
+          <br />Ishonchli va tezkor yetkazib berish xizmati.
         </p>
       </div>
 
       {books.length > 0 ? (
-        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {books.map((book) => (
             <BookCard
               key={book.id}
@@ -83,12 +83,12 @@ export default function ShopPage() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="bg-slate-50 p-8 rounded-full mb-6">
-            <BookOpen className="h-20 w-20 text-slate-200" />
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <div className="bg-slate-50 p-10 rounded-full mb-8 ring-1 ring-slate-100">
+            <BookOpen className="h-20 w-20 text-slate-300" />
           </div>
-          <h3 className="text-2xl font-black text-slate-900">No books found</h3>
-          <p className="mt-2 text-slate-500 font-medium max-w-xs">Our library is currently resting. Check back soon for new arrivals.</p>
+          <h3 className="text-2xl font-black text-slate-900 tracking-tight">Kutubxona bo'sh</h3>
+          <p className="mt-3 text-slate-500 font-medium max-w-xs leading-relaxed">Hozirda sotuvda kitoblar mavjud emas. Tez orada yangi kitoblar qo'shiladi.</p>
         </div>
       )}
 

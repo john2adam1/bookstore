@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface BannerRecord {
@@ -12,6 +12,7 @@ interface BannerRecord {
 }
 
 export function Banner() {
+    const pathname = usePathname()
     const [banners, setBanners] = useState<BannerRecord[]>([])
     const [currentIndex, setCurrentIndex] = useState(0)
     const [loading, setLoading] = useState(true)
@@ -39,32 +40,23 @@ export function Banner() {
         return () => clearInterval(timer)
     }, [banners])
 
+    if (pathname?.startsWith('/admin') || pathname === '/admin-login') return null
     if (loading || banners.length === 0) return null
 
     return (
         <div className="w-full bg-transparent pt-6 pb-2">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="relative w-full overflow-hidden rounded-[2rem] bg-slate-200 shadow-2xl shadow-blue-900/5 group ring-1 ring-slate-300">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={banners[currentIndex].id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="w-full flex items-center justify-center bg-black/5"
-                        >
-                            <img
-                                src={banners[currentIndex].image_url}
-                                alt={banners[currentIndex].title || "Announcement Banner"}
-                                className="w-full h-auto max-h-[500px] object-contain"
-                            />
-                        </motion.div>
-                    </AnimatePresence>
+                    <div className="w-full flex items-center justify-center bg-black/5">
+                        <img
+                            src={banners[currentIndex].image_url}
+                            alt={banners[currentIndex].title || "Announcement Banner"}
+                            className="w-full h-auto max-h-[500px] object-contain transition-opacity duration-500"
+                        />
+                    </div>
 
                     {banners.length > 1 && (
                         <>
-                            {/* Navigation Arrows */}
                             <button
                                 onClick={() => setCurrentIndex((prev) => (prev - 1 + banners.length) % banners.length)}
                                 className="absolute left-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 flex items-center justify-center bg-white/60 backdrop-blur-md border border-black/5 rounded-full text-slate-800 opacity-0 group-hover:opacity-100 transition-all hover:bg-white shadow-lg"
@@ -78,7 +70,6 @@ export function Banner() {
                                 <ChevronRight className="h-5 w-5" />
                             </button>
 
-                            {/* Pagination Dots Moved Lower */}
                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex space-x-2 px-3 py-1.5 bg-white/40 backdrop-blur-md rounded-full border border-black/5">
                                 {banners.map((_, idx) => (
                                     <button

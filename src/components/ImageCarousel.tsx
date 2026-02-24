@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
 
 interface ImageCarouselProps {
     images: string[]
@@ -32,32 +31,27 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
 
     return (
         <div className="group relative h-full w-full overflow-hidden bg-slate-100">
-            <AnimatePresence initial={false} mode="wait">
-                <motion.img
-                    key={currentIndex}
+            <div className="relative h-full w-full">
+                <img
                     src={images[currentIndex]}
                     alt={alt}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-contain p-4 transition-opacity duration-300"
                 />
-            </AnimatePresence>
+            </div>
 
             {images.length > 1 && (
                 <>
                     <button
                         onClick={handlePrevious}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 text-slate-800 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100 shadow-sm border border-slate-100"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/90 backdrop-blur-sm p-2 text-[#002B5B] transition-all hover:bg-white hover:scale-110 active:scale-90 shadow-md border border-slate-200 z-10"
                     >
-                        <ChevronLeft className="h-4 w-4" />
+                        <ChevronLeft className="h-5 w-5" />
                     </button>
                     <button
                         onClick={handleNext}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 text-slate-800 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100 shadow-sm border border-slate-100"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/90 backdrop-blur-sm p-2 text-[#002B5B] transition-all hover:bg-white hover:scale-110 active:scale-90 shadow-md border border-slate-200 z-10"
                     >
-                        <ChevronRight className="h-4 w-4" />
+                        <ChevronRight className="h-5 w-5" />
                     </button>
                     <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 space-x-1.5 px-2 py-1 bg-black/5 rounded-full">
                         {images.map((_, index) => (

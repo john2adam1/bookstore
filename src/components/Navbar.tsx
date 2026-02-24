@@ -1,12 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { ShoppingBag, User, LogOut, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase-browser'
 import { useEffect, useState } from 'react'
 
 export function Navbar() {
+    const pathname = usePathname()
     const [user, setUser] = useState<any>(null)
     const [role, setRole] = useState<string | null>(null)
     const router = useRouter()
@@ -44,6 +45,10 @@ export function Navbar() {
     const handleSignOut = async () => {
         await supabase.auth.signOut()
         router.refresh()
+    }
+
+    if (pathname?.startsWith('/admin') || pathname === '/admin-login') {
+        return null
     }
 
     return (
